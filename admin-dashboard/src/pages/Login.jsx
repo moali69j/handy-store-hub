@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import api from '../api/axios';
-
+import { useNavigate } from 'react-router-dom';
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -17,7 +18,7 @@ function Login() {
             }
 
             localStorage.setItem('token', access_token);
-            alert('تم تسجيل الدخول بنجاح!');
+            navigate('/dashboard');
             // هنا سنقوم لاحقاً بالتوجيه لصفحة الداشبورد
         // eslint-disable-next-line no-unused-vars
         } catch (error) {

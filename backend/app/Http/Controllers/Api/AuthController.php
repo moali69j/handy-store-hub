@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
-
+ use App\Models\Store;
 class AuthController extends Controller
 {
     public function login(Request $request)
@@ -40,4 +40,30 @@ class AuthController extends Controller
             ]
         ]);
     }
+   
+
+public function createStore(Request $request) {
+    $request->validate([
+        'name' => 'required|string',
+        'email' => 'required|email|unique:users',
+        'password' => 'required|min:6',
+        'store_name' => 'required|string',
+    ]);
+
+    // 1. إنشاء المستخدم كتاجر
+    $user = User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => bcrypt($request->password),
+        'role' => 'seller',
+    ]);
+
+    // 2. إنشاء المتجر المرتبط به
+    Store::create([
+        'user_id' => $user->id,
+        'store_name' => $request->store_name,
+    ]);
+
+    return response()->json(['message' => 'تم إنشاء المتجر والتاجر بنجاح'], 201);
+}
 }
