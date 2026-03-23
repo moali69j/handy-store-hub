@@ -51,12 +51,12 @@ public function createStore(Request $request) {
     ]);
 
     // 1. إنشاء المستخدم كتاجر
-    $user = User::create([
-        'name' => $request->name,
-        'email' => $request->email,
-        'password' => bcrypt($request->password),
-        'role' => 'seller',
-    ]);
+ $user = User::create([
+    'name' => $request->name,
+    'email' => $request->email,
+    'password' => $request->password, // الموديل سيقوم بالتشفير تلقائياً بفضل الـ casts
+    'role' => 'seller',
+]);
 
     // 2. إنشاء المتجر المرتبط به
     Store::create([
